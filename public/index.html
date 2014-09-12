@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<!--
+Exchange the line above for this to enable offline support
+<html lang="en" manifest="manifest.appcache">
+-->
+  <head>
+    <meta charset="UTF-8">
+    <title></title>
+    <meta name="description" content="">
+    <!-- remove maximum-scale for mobile web -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+    <!-- installable from browser -->
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <!-- icons -->
+    <link rel="icon" href="style/icons/favicon.ico" type="image/x-icon">
+    <link rel="shortcut icon" sizes="128x128" href="apple-touch-icon-precomposed.png">
+    <link rel="style/icons/apple-touch-icon-precomposed" href="apple-touch-icon-precomposed.png">
+
+    <!-- IE compatibility -->
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <!--[if IE]><link rel="shortcut icon" href="style/icons/favicon.ico"  type="image/x-icon"><![endif]-->
+
+    <!-- build:css style/app.min.css -->
+    <link rel="stylesheet" href="vendor/normalize-css/normalize.css">
+    <link rel="stylesheet" href="style/main.css">
+    <!-- endbuild -->
+    <link rel="localization" href="locales/manifest.json">
+
+    <!-- build:js js/app.min.js -->
+    <script defer src="vendor/l20n/l20n.min.js"></script>
+    <!-- endbuild -->
+    <!-- web component
+    <script defer src="vendor/platform/platform.js"></script>
+    <link rel="import" href="parts/app-main.html">
+    -->
+  </head>
+  <body fullbleed unresolved class="hidden">
+    <!-- Add your site or application content here -->
+    <!-- <h1 data-l10n-id="hello">Hello WebApplate</h1> -->
+
+    <canvas id="canvas"></canvas>
+
+    <!-- web component
+    <app-main></app-main>
+    -->
+
+    <!-- build:js js/body.min.js -->
+    <!-- Custom actions here -->
+    <script>
+        (function() {
+            var lastTime = 0;
+            var vendors = ['ms', 'moz', 'webkit', 'o'];
+            for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+                window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+                window.cancelAnimationFrame = window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+            }
+            if (!window.requestAnimationFrame) {
+                window.requestAnimationFrame = function(callback) {
+                        var currTime = new Date().getTime();
+                        var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+                        var id = window.setTimeout(function() { callback(currTime + timeToCall); },
+                        timeToCall);
+                        lastTime = currTime + timeToCall;
+                        return id;
+                };
+            }
+            if (!window.cancelAnimationFrame) {
+                window.cancelAnimationFrame = function(id) {
+                        clearTimeout(id);
+                };
+            }
+        }());
+    </script>
+    <script src="js/audiohack.js"></script>
+    <script src="js/game.js"></script>
+    <script defer src="js/main.js"></script>
+
+    <!-- App Install detection -->
+    <!--<script defer src="js/app_installer.js"></script>-->
+    <!-- endbuild -->
+
+    <!-- Debugger - remove for production -->
+    <!--<script defer src="https://getfirebug.com/firebug-lite.js"></script>-->
+
+    <!-- Google Analytics: change UA-XXXXX-X to be your site's ID. -->
+    <!--<script>
+        var _gaq=[["_setAccount","UA-XXXXX-X"],["_trackPageview"]];
+        (function(d,t){var g=d.createElement(t),s=d.getElementsByTagName(t)[0];g.async=1;
+        g.src=("https:"==location.protocol?"//ssl":"//www")+".google-analytics.com/ga.js";
+        s.parentNode.insertBefore(g,s)}(document,"script"));
+    </script>-->
+  </body>
+</html>

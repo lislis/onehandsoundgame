@@ -1,0 +1,12 @@
+CACHE MANIFEST
+
+CACHE:
+
+NETWORK:
+*
+
+FALLBACK:
+/ fallback.html
+
+SETTINGS:
+prefer-online
