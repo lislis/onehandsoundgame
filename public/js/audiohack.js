@@ -10,6 +10,7 @@ AudioHack.prototype = {
 	osc: {},
 	loop: {},
 	gain: {},
+	firing: false,
 
 
 	init: function() {
@@ -21,7 +22,7 @@ AudioHack.prototype = {
 
 		this.ctx = new AudioContext();
 		//this.osc = this.ctx.createOscillator();
-		//this.gain = this.ctx.createGain();
+		this.gain = this.ctx.createGain();
 
 		//this.osc.connect(this.gain);
 		//this.gain.connect(this.ctx.destination);
@@ -31,9 +32,11 @@ AudioHack.prototype = {
 		var playAudioFile = function (buffer) {
 			self.loop = self.ctx.createBufferSource();
 			self.loop.buffer = buffer;
-			self.loop.connect(self.ctx.destination);
+			self.loop.connect(self.gain);
+			self.gain.connect(self.ctx.destination);
 			self.loop.loop = true;
-			//self.loop.start(0); // Play sound immediately
+			self.gain.gain.value = 0.1;
+			self.loop.start(0); // Play sound immediately
 		};
 		var loadAudioFile = (function (url) {
 			var request = new XMLHttpRequest();
@@ -68,6 +71,10 @@ AudioHack.prototype = {
 		} else {
 			return false;
 		}
+		return this.osc.type;
+	},
+	isFiring: function() {
+		return this.firing;
 	},
 
 	actions: function() {
@@ -102,6 +109,7 @@ AudioHack.prototype = {
 					self.osc.connect(self.ctx.destination);
 					self.osc.start(0);
 					checkSpace = true;
+					self.firing = true;
 				}
 			}
 			
@@ -111,8 +119,9 @@ AudioHack.prototype = {
 			if (key === 32) { // space
 				self.osc.stop(0);
 				checkSpace = false;
+				self.firing = false;
 			}
 		});
 	}
 
-}
+};
